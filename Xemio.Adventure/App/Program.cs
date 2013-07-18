@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using Xemio.GameLibrary;
+using Xemio.GameLibrary.Rendering.GDIPlus;
 
 namespace Xemio.Adventure.App
 {
@@ -13,7 +15,13 @@ namespace Xemio.Adventure.App
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            MainForm mainForm = new MainForm();
+
+            XGL.Initialize(new GDIGraphicsInitializer());
+            XGL.Run(mainForm.Handle, 400, 300, 60);
+
+            Application.Run(mainForm);
         }
     }
 }
