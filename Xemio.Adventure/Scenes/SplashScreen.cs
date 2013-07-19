@@ -233,6 +233,9 @@ namespace Xemio.Adventure.Scenes
         #endregion
 
         #region Fields
+        private float _alpha;
+        private float _elapsed;
+
         private ITexture _texture;
         private readonly byte[] _textureData;
         #endregion
@@ -246,6 +249,22 @@ namespace Xemio.Adventure.Scenes
             this._texture = this.TextureFactory.CreateTexture(this._textureData);
         }
         /// <summary>
+        /// Handles a game tick.
+        /// </summary>
+        /// <param name="elapsed">The elapsed.</param>
+        public override void Tick(float elapsed)
+        {
+            this._elapsed += elapsed;
+            if (this._elapsed >= 2000.0f)
+            {
+                this._alpha = MathHelper.Min(this._alpha + 0.025f, 1.0f);
+                if (this._alpha >= 1.0f)
+                {
+                    this.SceneManager.Remove(this);
+                }
+            }
+        }
+        /// <summary>
         /// Renders this instance.
         /// </summary>
         public override void Render()
@@ -255,6 +274,10 @@ namespace Xemio.Adventure.Scenes
                 new Vector2(
                     200 - this._texture.Width * 0.5f,
                     150 - this._texture.Height * 0.5f));
+
+            this.Geometry.FillRectangle(
+                this.Geometry.Factory.CreateSolid(new Color(0.0f, 0.0f, 0.0f, this._alpha)),
+                new Rectangle(0, 0, 400, 300));
         }
         #endregion
     }
