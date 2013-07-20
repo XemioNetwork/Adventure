@@ -18,21 +18,10 @@ namespace Xemio.Adventure.Scenes
 {
     public class MainScene : Scene
     {
-        #region Constructors
-        public MainScene()
-        {
-
-        }
-        #endregion
-
         #region Fields
         private World _world;
         #endregion
-
-        #region Properties
-
-        #endregion
-
+        
         #region Methods
         /// <summary>
         /// Loads the content.
@@ -45,14 +34,18 @@ namespace Xemio.Adventure.Scenes
 
             this._world.ActiveCamera = new Camera();
         }
+        /// <summary>
+        /// Handles a game tick.
+        /// </summary>
+        /// <param name="elapsed">The elapsed.</param>
         public override void Tick(float elapsed)
         {
             this._world.ActiveCamera.Position += new Vector2(1, 1);
             this._world.Tick(elapsed);
-
-            GameLoop loop = XGL.Components.Get<GameLoop>();
-            Debug.WriteLine(loop.FramesPerSecond.ToString() + "fps");
         }
+        /// <summary>
+        /// Renders this instance.
+        /// </summary>
         public override void Render()
         {
             this._world.Renderer.Render();

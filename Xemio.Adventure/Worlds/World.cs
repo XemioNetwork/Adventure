@@ -103,6 +103,14 @@ namespace Xemio.Adventure.Worlds
 
         #region Methods
         /// <summary>
+        /// Gets the tile for the specified index.
+        /// </summary>
+        /// <param name="tileIndex">Index of the tile.</param>
+        public TileReference GetTile(int tileIndex)
+        {
+            return this.GetTileSet(tileIndex).GetTile(tileIndex);
+        }
+        /// <summary>
         /// Gets a corresponding tileset for the specified tile index.
         /// </summary>
         /// <param name="tileIndex">Index of the tile.</param>

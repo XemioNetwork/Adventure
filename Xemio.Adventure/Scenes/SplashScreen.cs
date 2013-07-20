@@ -61,15 +61,17 @@ namespace Xemio.Adventure.Scenes
         /// </summary>
         public override void Render()
         {
+            DisplayMode displayMode = this.GraphicsDevice.DisplayMode;
+
             this.RenderManager.Clear(new Color(221, 221, 221));
             this.RenderManager.Render(this._texture,
                 new Vector2(
-                    200 - this._texture.Width * 0.5f,
-                    150 - this._texture.Height * 0.5f));
+                    displayMode.Center.X - this._texture.Width * 0.5f,
+                    displayMode.Center.Y - this._texture.Height * 0.5f));
 
             this.Geometry.FillRectangle(
                 this.Geometry.Factory.CreateSolid(new Color(0.0f, 0.0f, 0.0f, this._alpha)),
-                new Rectangle(0, 0, 400, 300));
+                new Rectangle(0, 0, displayMode.Width, displayMode.Height));
         }
         #endregion
     }

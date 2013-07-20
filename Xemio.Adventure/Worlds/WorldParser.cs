@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Xemio.Adventure.Worlds.Entities;
+using Xemio.Adventure.Worlds.Entities.Components;
 using Xemio.Adventure.Worlds.TileEngine.Tiles;
 using Xemio.GameLibrary;
 using Xemio.GameLibrary.Common;
+using Xemio.GameLibrary.Entities;
 using Xemio.GameLibrary.Math;
 using Xemio.GameLibrary.Plugins.Implementations;
 using Xemio.GameLibrary.Rendering;
@@ -37,6 +42,7 @@ namespace Xemio.Adventure.Worlds
         /// <param name="input">The input.</param>
         public World Parse(string input)
         {
+            Stopwatch watch = Stopwatch.StartNew();
             JObject jsonWorld = JObject.Parse(input);
 
             int width = jsonWorld["width"].Value<int>();
@@ -52,6 +58,7 @@ namespace Xemio.Adventure.Worlds
 
             List<TileSet> tileSets = new List<TileSet>();
             List<TileSet> entityTileSets = new List<TileSet>();
+            Dictionary<int, string> entityIds = new Dictionary<int, string>();
 
             foreach (JObject jsonTileset in jsonTilesets)
             {
@@ -72,23 +79,37 @@ namespace Xemio.Adventure.Worlds
                     entityTileSets.Add(tileSet);
                 }
 
-                JObject jsonTileProperties = jsonTileset["tileproperties"].Value<JObject>();
+
+                JToken jsonTilePropertyToken = jsonTileset["tileproperties"];
                 for (int i = 0; i < tileSheet.Textures.Length; i++)
                 {
                     string tileId = "Default";
-                    string namedIndex = i.ToString();
 
-                    JToken currentValue;
-                    if (jsonTileProperties.TryGetValue(namedIndex, out currentValue))
+                    string namedIndex = i.ToString();
+                    JToken currentValue = default(JToken);
+
+                    if (jsonTilePropertyToken != null &&
+                        jsonTilePropertyToken
+                            .Value<JObject>()
+                            .TryGetValue(namedIndex, out currentValue))
                     {
-                        tileId = currentValue["TileId"].Value<string>();
+                        if (currentValue["TileId"] != null)
+                        {
+                            tileId = currentValue["TileId"].Value<string>();
+                        }
+                        if (currentValue["EntityId"] != null)
+                        {
+                            entityIds.Add(
+                                tileSet.FirstTileIndex + i,
+                                currentValue["EntityId"].Value<string>());
+                        }
                     }
 
                     //TODO: animation data as tile properties inside tiled.
                     TileReference reference = new TileReference(
                         this._implementations.Get<string, Tile>(tileId),
                         new Animation("Main", tileSheet.Textures[i]));
-
+                    
                     tileSet.Tiles.Add(reference);
                 }
 
@@ -104,7 +125,30 @@ namespace Xemio.Adventure.Worlds
                 {
                     case "objectgroup":
                         {
-                            //TODO: implement
+                            JArray jsonObjects = jsonLayer["objects"].Value<JArray>();
+                            foreach (JObject jsonValue in jsonObjects)
+                            {
+                                int tileId = jsonValue["gid"].Value<int>();
+                                Vector2 position = new Vector2(
+                                    jsonValue["x"].Value<int>(),
+                                    jsonValue["y"].Value<int>());
+
+                                //TODO: properties for EntityDataContainer
+
+                                TileReference reference = world.GetTile(tileId);
+
+                                Entity entity = this._implementations
+                                    .Get<string, LinkableEntity>(entityIds[tileId]);
+
+                                Entity instance = (Entity)Activator.CreateInstance(entity.GetType());
+                                instance.Position = position;
+
+                                var animationComponent = new AnimationComponent(
+                                    instance, reference.Animation.Animation);
+
+                                instance.Components.Add(animationComponent);
+                                world.Environment.Add(instance);
+                            }
                         }
                         break;
                     case "tilelayer":
@@ -130,6 +174,15 @@ namespace Xemio.Adventure.Worlds
                         break;
                 }
             }
+
+            foreach (TileSet tileSet in entityTileSets)
+            {
+                world.TileSets.Remove(tileSet);
+            }
+
+            watch.Stop();
+
+            Debug.WriteLine("Loaded world ({0}ms)", watch.Elapsed.TotalMilliseconds);
 
             return world;
         }

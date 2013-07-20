@@ -21,7 +21,7 @@ namespace Xemio.Adventure.App
             MainForm mainForm = new MainForm();
 
             XGL.Initialize(new GDIGraphicsInitializer());
-            XGL.Run(mainForm.Handle, 400, 300, 60);
+            XGL.Run(mainForm.Handle, 800, 600, 60);
 
             SceneManager sceneManager = XGL.Components.Get<SceneManager>();
             MainScene startScene = new MainScene();

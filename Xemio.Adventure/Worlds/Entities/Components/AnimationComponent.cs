@@ -19,7 +19,7 @@ namespace Xemio.Adventure.Worlds.Entities.Components
         /// <param name="animation">The animation.</param>
         public AnimationComponent(Entity entity, Animation animation) : base(entity)
         {
-            this.Animation = animation;
+            this.Animation = animation.CreateInstance();
         }
         #endregion
         
@@ -27,7 +27,7 @@ namespace Xemio.Adventure.Worlds.Entities.Components
         /// <summary>
         /// Gets the animation.
         /// </summary>
-        public Animation Animation { get; private set; }
+        public AnimationInstance Animation { get; private set; }
         #endregion
     }
 }

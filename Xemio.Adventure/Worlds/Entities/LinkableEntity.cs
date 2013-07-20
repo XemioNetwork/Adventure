@@ -10,6 +10,16 @@ namespace Xemio.Adventure.Worlds.Entities
 {
     public abstract class LinkableEntity : Entity, ILinkable<string>
     {
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinkableEntity"/> class.
+        /// </summary>
+        protected LinkableEntity()
+        {
+            this.Renderer = new LinkableEntityRenderer(this);
+        }
+        #endregion
+
         #region Implementation of ILinkable<string>
         /// <summary>
         /// Gets the id.

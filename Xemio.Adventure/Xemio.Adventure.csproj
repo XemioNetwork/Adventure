@@ -66,6 +66,7 @@
     <Compile Include="Worlds\CameraMode.cs" />
     <Compile Include="Worlds\Entities\Components\AnimationComponent.cs" />
     <Compile Include="Worlds\Entities\LinkableEntity.cs" />
+    <Compile Include="Worlds\Entities\LinkableEntityRenderer.cs" />
     <Compile Include="Worlds\Entities\TestEntity.cs" />
     <Compile Include="Worlds\TileEngine\Components\ITileComponent.cs" />
     <Compile Include="Worlds\TileEngine\Components\RenderingComponent.cs" />
@@ -111,6 +112,9 @@
   <ItemGroup>
     <Content Include="Libraries\XGL.dll" />
     <Content Include="Libraries\XGL.Rendering.GDIPlus.dll" />
+    <Content Include="Resources\sword.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\tilesheet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
