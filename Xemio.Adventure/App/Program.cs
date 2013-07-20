@@ -24,7 +24,9 @@ namespace Xemio.Adventure.App
             XGL.Run(mainForm.Handle, 400, 300, 60);
 
             SceneManager sceneManager = XGL.Components.Get<SceneManager>();
-            sceneManager.Add(new SplashScreen());
+            MainScene startScene = new MainScene();
+
+            sceneManager.Add(new SplashScreen(startScene));
 
             Application.Run(mainForm);
         }
