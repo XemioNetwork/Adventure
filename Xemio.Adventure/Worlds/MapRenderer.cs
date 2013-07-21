@@ -21,15 +21,15 @@ namespace Xemio.Adventure.Worlds
         /// <param name="world">The world.</param>
         public MapRenderer(Map world)
         {
-            this.World = world;
+            this.Map = world;
         }
         #endregion
 
         #region Properties
         /// <summary>
-        /// Gets the world.
+        /// Gets the map.
         /// </summary>
-        public Map World { get; private set; }
+        public Map Map { get; private set; }
         #endregion
 
         #region Methods
@@ -41,26 +41,26 @@ namespace Xemio.Adventure.Worlds
             GraphicsDevice graphicsDevice = XGL.Components.Get<GraphicsDevice>();
             DisplayMode displayMode = graphicsDevice.DisplayMode;
 
-            int tilesX = displayMode.Width / this.World.TileWidth + 2;
-            int tilesY = displayMode.Height / this.World.TileHeight + 2;
+            int tilesX = displayMode.Width / this.Map.Bounds.TileWidth + 2;
+            int tilesY = displayMode.Height / this.Map.Bounds.TileHeight + 2;
 
             Vector2 cameraPosition = Vector2.Zero;
-            if (this.World.ActiveCamera != null)
+            if (this.Map.ActiveCamera != null)
             {
-                cameraPosition = this.World.ActiveCamera.Position;
+                cameraPosition = this.Map.ActiveCamera.Position;
             }
 
-            int offsetX = (int)cameraPosition.X / (int)this.World.TileWidth;
-            int offsetY = (int)cameraPosition.Y / (int)this.World.TileHeight;
+            int offsetX = (int)cameraPosition.X / (int)this.Map.Bounds.TileWidth;
+            int offsetY = (int)cameraPosition.Y / (int)this.Map.Bounds.TileHeight;
 
             graphicsDevice.RenderManager.Translate(-cameraPosition);
             for (int x = 0; x < tilesX; x++)
             {
                 for (int y = 0; y < tilesY; y++)
                 {
-                    for (int z = 0; z < this.World.LayerCount; z++)
+                    for (int z = 0; z < this.Map.Bounds.LayerCount; z++)
                     {
-                        Field field = this.World.GetField(offsetX + x, offsetY + y, z);
+                        Field field = this.Map.GetField(offsetX + x, offsetY + y, z);
 
                         if (field.Reference == null)
                             continue;
@@ -73,7 +73,7 @@ namespace Xemio.Adventure.Worlds
                 }
             }
 
-            this.World.Environment.Render();
+            this.Map.Environment.Render();
             graphicsDevice.RenderManager.Translate(Vector2.Zero);
         }
         #endregion

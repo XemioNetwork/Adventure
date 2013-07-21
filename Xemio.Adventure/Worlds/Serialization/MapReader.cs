@@ -37,7 +37,10 @@ namespace Xemio.Adventure.Worlds.Serialization
             Map map = format.Parse(input);
 
             watch.Stop();
-            Debug.WriteLine("Loaded map '{0}' ({1}ms)", map.Header.Name, watch.Elapsed.TotalMilliseconds);
+
+            Debug.WriteLine("Loaded map '{0}' ({1}ms)",
+                map.Name,
+                watch.Elapsed.TotalMilliseconds);
 
             return map;
         }

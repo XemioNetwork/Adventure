@@ -6,18 +6,18 @@ using System.IO;
 
 namespace Xemio.Adventure.Worlds
 {
-    public class MapProperties
+    public class MapBounds
     {
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapProperties"/> class.
+        /// Initializes a new instance of the <see cref="MapBounds"/> class.
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="tileWidth">Width of the tile.</param>
         /// <param name="tileHeight">Height of the tile.</param>
         /// <param name="layers">The layers.</param>
-        public MapProperties(int width, int height, int tileWidth, int tileHeight, int layers)
+        public MapBounds(int width, int height, int tileWidth, int tileHeight, int layers)
         {
             this.Width = width;
             this.Height = height;

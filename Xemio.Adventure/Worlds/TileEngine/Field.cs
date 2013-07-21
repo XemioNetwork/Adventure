@@ -19,7 +19,7 @@ namespace Xemio.Adventure.Worlds.TileEngine
         /// <param name="layer">The layer.</param>
         public Field(Map world, int x, int y, int layer)
         {
-            this.World = world;
+            this.Map = world;
             this.X = x;
             this.Y = y;
             this.Layer = layer;
@@ -42,7 +42,7 @@ namespace Xemio.Adventure.Worlds.TileEngine
         /// <summary>
         /// Gets the world.
         /// </summary>
-        public Map World { get; private set; }
+        public Map Map { get; private set; }
         /// <summary>
         /// Gets or sets the reference.
         /// </summary>

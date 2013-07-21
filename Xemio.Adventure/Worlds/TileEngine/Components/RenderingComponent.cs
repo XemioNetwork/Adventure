@@ -26,8 +26,8 @@ namespace Xemio.Adventure.Worlds.TileEngine.Components
             renderManager.Render(
                 field.Reference.Animation.Frame,
                 new Vector2(
-                    field.X * field.World.TileWidth,
-                    field.Y * field.World.TileHeight));
+                    field.X * field.Map.Bounds.TileWidth,
+                    field.Y * field.Map.Bounds.TileHeight));
         }
         #endregion
     }

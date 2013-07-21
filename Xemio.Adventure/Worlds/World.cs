@@ -4,8 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Xemio.Adventure.Worlds.Events;
 using Xemio.GameLibrary;
 using Xemio.GameLibrary.Content;
+using Xemio.GameLibrary.Events;
+using Xemio.GameLibrary.Events.Logging;
 
 namespace Xemio.Adventure.Worlds
 {
@@ -39,7 +42,18 @@ namespace Xemio.Adventure.Worlds
         /// <param name="name">The name.</param>
         public void ChangeMap(string name)
         {
-            this.ActiveMap = this.Maps.FirstOrDefault(map => map.Header.Name == name);
+            Map activeMap = this.Maps
+                .FirstOrDefault(map => map.Name == name);
+
+            if (activeMap == null)
+            {
+                var eventManager = XGL.Components.Get<EventManager>();
+                eventManager.Publish(new UnknownMapLoggingEvent(name));
+
+                return;
+            }
+
+            this.ActiveMap = activeMap;
         }
         /// <summary>
         /// Handles a game tick.

@@ -6,6 +6,7 @@ using Xemio.Adventure.Worlds.TileEngine;
 using Xemio.Adventure.Worlds.TileEngine.Components;
 using Xemio.Adventure.Worlds.TileEngine.Tiles;
 using Xemio.GameLibrary;
+using Xemio.GameLibrary.Common;
 using Xemio.GameLibrary.Entities;
 using Xemio.GameLibrary.Events;
 using Xemio.GameLibrary.Events.Logging;
@@ -19,28 +20,24 @@ namespace Xemio.Adventure.Worlds
         /// <summary>
         /// Initializes a new instance of the <see cref="Map"/> class.
         /// </summary>
-        /// <param name="header">The header.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="properties">The map properties.</param>
         /// <param name="tileSets">The tile sets.</param>
-        /// <param name="properties">The properties.</param>
-        public Map(MapHeader header, IEnumerable<TileSet> tileSets, MapProperties properties)
+        /// <param name="bounds">The properties.</param>
+        public Map(string name, ObjectStorage properties, IEnumerable<TileSet> tileSets, MapBounds bounds)
         {
-            this.Header = header;
+            this.Name = name;
+            this.Properties = properties;
 
-            this.Width = properties.Width;
-            this.Height = properties.Height;
-            this.LayerCount = properties.LayerCount;
-
-            this.TileWidth = properties.TileWidth;
-            this.TileHeight = properties.TileHeight;
-
+            this.Bounds = bounds;
             this.TileSets = tileSets.ToList();
 
-            this.Fields = new Field[this.Width, this.Height, this.LayerCount];
-            for (int x = 0; x < this.Width; x++)
+            this.Fields = new Field[this.Bounds.Width, this.Bounds.Height, this.Bounds.LayerCount];
+            for (int x = 0; x < this.Bounds.Width; x++)
             {
-                for (int y = 0; y < this.Height; y++)
+                for (int y = 0; y < this.Bounds.Height; y++)
                 {
-                    for (int z = 0; z < this.LayerCount; z++)
+                    for (int z = 0; z < this.Bounds.LayerCount; z++)
                     {
                         this.Fields[x, y, z] = new Field(this, x, y, z);
                     }
@@ -60,29 +57,17 @@ namespace Xemio.Adventure.Worlds
 
         #region Properties
         /// <summary>
-        /// Gets the header.
+        /// Gets the name.
         /// </summary>
-        public MapHeader Header { get; private set; }
+        public string Name { get; private set; }
         /// <summary>
-        /// Gets the width.
+        /// Gets the properties.
         /// </summary>
-        public int Width { get; private set; }
+        public ObjectStorage Properties { get; private set; }
         /// <summary>
-        /// Gets the height.
+        /// Gets the bounds.
         /// </summary>
-        public int Height { get; private set; }
-        /// <summary>
-        /// Gets the layer count.
-        /// </summary>
-        public int LayerCount { get; private set; }
-        /// <summary>
-        /// Gets the width of the tile.
-        /// </summary>
-        public int TileWidth { get; private set; }
-        /// <summary>
-        /// Gets the height of the tile.
-        /// </summary>
-        public int TileHeight { get; private set; }
+        public MapBounds Bounds { get; private set; }
         /// <summary>
         /// Gets the tile sets.
         /// </summary>
@@ -129,9 +114,9 @@ namespace Xemio.Adventure.Worlds
         /// <param name="z">The z.</param>
         public Field GetField(int x, int y, int z)
         {
-            if (x < 0 || x >= this.Width ||
-                y < 0 || y >= this.Height ||
-                z < 0 || z >= this.LayerCount)
+            if (x < 0 || x >= this.Bounds.Width ||
+                y < 0 || y >= this.Bounds.Height ||
+                z < 0 || z >= this.Bounds.LayerCount)
             {
                 this._eventManager.Publish(new MapBoundaryLoggingEvent(x, y, z));
                 return new Field(this, x, y, z);
@@ -148,9 +133,9 @@ namespace Xemio.Adventure.Worlds
         /// <param name="tileIndex">Index of the tile.</param>
         public void SetField(int x, int y, int z, int tileIndex)
         {
-            if (x < 0 || x >= this.Width ||
-                y < 0 || y >= this.Height ||
-                z < 0 || z >= this.LayerCount)
+            if (x < 0 || x >= this.Bounds.Width ||
+                y < 0 || y >= this.Bounds.Height ||
+                z < 0 || z >= this.Bounds.LayerCount)
             {
                 this._eventManager.Publish(new MapBoundaryLoggingEvent(x, y, z));
                 return;

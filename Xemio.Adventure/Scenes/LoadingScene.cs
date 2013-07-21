@@ -30,7 +30,6 @@ namespace Xemio.Adventure.Scenes
         public override void LoadContent()
         {
             this._screenAlpha = 1.0f;
-
             this._loadingTexture = this.TextureFactory.CreateTexture("Resources/loading.png");
         }
         /// <summary>

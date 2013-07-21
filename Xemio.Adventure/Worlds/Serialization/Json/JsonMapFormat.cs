@@ -125,11 +125,9 @@ namespace Xemio.Adventure.Worlds.Serialization.Json
 
                 tileSets.Add(tileSet);
             }
-
-            MapHeader header = new MapHeader(name, mapProperties);
-
-            MapProperties properties = new MapProperties(width, height, tileWidth, tileHeight, layers);
-            Map map = new Map(header, tileSets, properties);
+            
+            MapBounds bounds = new MapBounds(width, height, tileWidth, tileHeight, layers);
+            Map map = new Map(name, mapProperties, tileSets, bounds);
             
             int layerIndex = 0;
 
@@ -184,7 +182,7 @@ namespace Xemio.Adventure.Worlds.Serialization.Json
                             {
                                 map.SetField(x, y, layerIndex, jsonValue.Value<int>());
 
-                                if (++x >= map.Width)
+                                if (++x >= map.Bounds.Width)
                                 {
                                     x = 0;
                                     y++;

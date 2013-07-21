@@ -25,7 +25,7 @@ namespace Xemio.Adventure.Worlds.Serialization.Json
         /// <param name="jObject">The json object.</param>
         public static ObjectStorage CreateObjectStorage(JObject jObject)
         {
-            ObjectStorage storage = new JsonObjectStorage();
+            ObjectStorage storage = new ObjectStorage();
             IList<string> keys = jObject
                 .Properties()
                 .Select(p => p.Name)
@@ -33,9 +33,10 @@ namespace Xemio.Adventure.Worlds.Serialization.Json
 
             foreach (string key in keys)
             {
-                storage.Store(key, jObject[key]
-                    .Value<JValue>()
-                    .Value<object>());
+                JValue value = jObject[key].Value<JValue>();
+
+                storage.Store(
+                    key, value.Value);
             }
 
             return storage;

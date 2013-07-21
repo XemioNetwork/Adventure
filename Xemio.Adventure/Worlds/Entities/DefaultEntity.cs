@@ -8,7 +8,7 @@ using Xemio.GameLibrary.Math;
 
 namespace Xemio.Adventure.Worlds.Entities
 {
-    public class TestEntity : LinkableEntity
+    public class DefaultEntity : LinkableEntity
     {
         #region Overrides of LinkableEntity
         /// <summary>
@@ -16,14 +16,7 @@ namespace Xemio.Adventure.Worlds.Entities
         /// </summary>
         public override string Id
         {
-            get { return "Test"; }
-        }
-        #endregion
-
-        #region Methods
-        public override void Tick(float elapsed)
-        {
-            this.Position += new Vector2(1, 1);
+            get { return "Default"; }
         }
         #endregion
     }
