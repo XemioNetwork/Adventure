@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Xemio.Adventure.Worlds.Cameras;
+using Xemio.Adventure.Worlds.Events;
 using Xemio.Adventure.Worlds.TileEngine;
 using Xemio.Adventure.Worlds.TileEngine.Components;
-using Xemio.Adventure.Worlds.TileEngine.Events;
 using Xemio.Adventure.Worlds.TileEngine.Tiles;
 using Xemio.GameLibrary;
 using Xemio.GameLibrary.Entities;
@@ -18,32 +19,28 @@ namespace Xemio.Adventure.Worlds
         /// <summary>
         /// Initializes a new instance of the <see cref="Map"/> class.
         /// </summary>
-        /// <param name="name">The name.</param>
+        /// <param name="header">The header.</param>
         /// <param name="tileSets">The tile sets.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="tileWidth">Width of the tile.</param>
-        /// <param name="tileHeight">Height of the tile.</param>
-        /// <param name="layers">The layers.</param>
-        public Map(string name, IEnumerable<TileSet> tileSets, int width, int height, int tileWidth, int tileHeight, int layers)
+        /// <param name="properties">The properties.</param>
+        public Map(MapHeader header, IEnumerable<TileSet> tileSets, MapProperties properties)
         {
-            this.Name = name;
+            this.Header = header;
 
-            this.Width = width;
-            this.Height = height;
-            this.LayerCount = layers;
+            this.Width = properties.Width;
+            this.Height = properties.Height;
+            this.LayerCount = properties.LayerCount;
 
-            this.TileWidth = tileWidth;
-            this.TileHeight = tileHeight;
+            this.TileWidth = properties.TileWidth;
+            this.TileHeight = properties.TileHeight;
 
             this.TileSets = tileSets.ToList();
 
-            this.Fields = new Field[width, height, layers];
-            for (int x = 0; x < width; x++)
+            this.Fields = new Field[this.Width, this.Height, this.LayerCount];
+            for (int x = 0; x < this.Width; x++)
             {
-                for (int y = 0; y < height; y++)
+                for (int y = 0; y < this.Height; y++)
                 {
-                    for (int z = 0; z < layers; z++)
+                    for (int z = 0; z < this.LayerCount; z++)
                     {
                         this.Fields[x, y, z] = new Field(this, x, y, z);
                     }
@@ -63,9 +60,9 @@ namespace Xemio.Adventure.Worlds
 
         #region Properties
         /// <summary>
-        /// Gets the name.
+        /// Gets the header.
         /// </summary>
-        public string Name { get; private set; }
+        public MapHeader Header { get; private set; }
         /// <summary>
         /// Gets the width.
         /// </summary>
@@ -101,22 +98,21 @@ namespace Xemio.Adventure.Worlds
         /// <summary>
         /// Gets or sets the active camera.
         /// </summary>
-        public Camera ActiveCamera { get; set; }
+        public ICamera ActiveCamera { get; set; }
         /// <summary>
         /// Gets the renderer.
         /// </summary>
         public MapRenderer Renderer { get; private set; }
+        /// <summary>
+        /// Gets the maximum tile index.
+        /// </summary>
+        public int MaxTileIndex
+        {
+            get { return this.TileSets.Sum(tileset => tileset.Tiles.Count); }
+        }
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Gets the tile for the specified index.
-        /// </summary>
-        /// <param name="tileIndex">Index of the tile.</param>
-        public TileReference GetTile(int tileIndex)
-        {
-            return this.GetTileSet(tileIndex).GetTile(tileIndex);
-        }
         /// <summary>
         /// Gets a corresponding tileset for the specified tile index.
         /// </summary>
@@ -137,7 +133,7 @@ namespace Xemio.Adventure.Worlds
                 y < 0 || y >= this.Height ||
                 z < 0 || z >= this.LayerCount)
             {
-                this._eventManager.Publish(new FieldOutOfRangeLoggingEvent(x, y, z));
+                this._eventManager.Publish(new MapBoundaryLoggingEvent(x, y, z));
                 return new Field(this, x, y, z);
             }
 
@@ -156,7 +152,7 @@ namespace Xemio.Adventure.Worlds
                 y < 0 || y >= this.Height ||
                 z < 0 || z >= this.LayerCount)
             {
-                this._eventManager.Publish(new FieldOutOfRangeLoggingEvent(x, y, z));
+                this._eventManager.Publish(new MapBoundaryLoggingEvent(x, y, z));
                 return;
             }
 

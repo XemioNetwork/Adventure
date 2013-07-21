@@ -20,6 +20,7 @@ namespace Xemio.Adventure.Scenes
         private float _screenAlpha;
 
         private bool _loaded;
+        private bool _framePassed;
         #endregion
         
         #region Methods
@@ -30,8 +31,7 @@ namespace Xemio.Adventure.Scenes
         {
             this._screenAlpha = 1.0f;
 
-            this._loadingTexture = this.TextureFactory.CreateTexture(
-                "loading", Resources.ResourceManager);
+            this._loadingTexture = this.TextureFactory.CreateTexture("Resources/loading.png");
         }
         /// <summary>
         /// Ticks the specified elapsed.
@@ -39,6 +39,20 @@ namespace Xemio.Adventure.Scenes
         /// <param name="elapsed">The elapsed.</param>
         public override void Tick(float elapsed)
         {
+            this._alpha = MathHelper.Min(1.0f, this._alpha + 0.05f);
+            if (this._loaded && this._framePassed)
+            {
+                this._screenAlpha = MathHelper.Max(0.0f, this._screenAlpha - 0.008f);
+            }
+
+            if (this._loaded)
+            {
+                //Wait for one frame, since the loading lag spike would
+                //create a short amount of lag for the fade-out animation
+
+                this._framePassed = true;
+            }
+
             if (this._alpha >= 1.0f && !this._loaded)
             {
                 World world = WorldLoader.Load("./Maps/");
@@ -48,12 +62,6 @@ namespace Xemio.Adventure.Scenes
                 this.BringToFront();
 
                 this._loaded = true;
-            }
-
-            this._alpha = MathHelper.Min(1.0f, this._alpha + 0.05f);
-            if (this._loaded)
-            {
-                this._screenAlpha = MathHelper.Max(0.0f, this._screenAlpha - 0.01f);
             }
 
             if (this._screenAlpha <= 0.0f)

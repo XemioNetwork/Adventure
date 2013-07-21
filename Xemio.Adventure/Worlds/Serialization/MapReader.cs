@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.IO;
-using Xemio.Adventure.Worlds.Serialization.Formats;
 using Xemio.GameLibrary;
 using Xemio.GameLibrary.Content;
 using Xemio.GameLibrary.Plugins.Implementations;
@@ -38,7 +37,7 @@ namespace Xemio.Adventure.Worlds.Serialization
             Map map = format.Parse(input);
 
             watch.Stop();
-            Debug.WriteLine("Loaded map '{0}' ({1}ms)", map.Name, watch.Elapsed.TotalMilliseconds);
+            Debug.WriteLine("Loaded map '{0}' ({1}ms)", map.Header.Name, watch.Elapsed.TotalMilliseconds);
 
             return map;
         }

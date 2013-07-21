@@ -17,10 +17,12 @@ namespace Xemio.Adventure.Worlds.TileEngine.Tiles
         /// </summary>
         /// <param name="tile">The tile.</param>
         /// <param name="animation">The animation.</param>
-        public TileReference(Tile tile, Animation animation)
+        /// <param name="properties">The properties.</param>
+        public TileReference(Tile tile, Animation animation, ObjectStorage properties)
         {
             this.Tile = tile;
             this.Animation = animation.CreateInstance();
+            this.Properties = properties;
         }
         #endregion
         
@@ -33,6 +35,10 @@ namespace Xemio.Adventure.Worlds.TileEngine.Tiles
         /// Gets the animation.
         /// </summary>
         public AnimationInstance Animation { get; private set; }
+        /// <summary>
+        /// Gets the properties.
+        /// </summary>
+        public ObjectStorage Properties { get; private set; }
         #endregion
     }
 }

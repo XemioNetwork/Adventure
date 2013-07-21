@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Xemio.Adventure.Worlds.Entities.Components;
 using Xemio.GameLibrary.Math;
 
 namespace Xemio.Adventure.Worlds.Entities

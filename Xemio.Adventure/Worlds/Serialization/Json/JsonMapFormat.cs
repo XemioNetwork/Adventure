@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.IO;
 using Newtonsoft.Json.Linq;
 using Xemio.Adventure.Worlds.Entities;
 using Xemio.Adventure.Worlds.Entities.Components;
+using Xemio.Adventure.Worlds.Generation;
 using Xemio.Adventure.Worlds.TileEngine.Tiles;
 using Xemio.GameLibrary;
+using Xemio.GameLibrary.Common;
 using Xemio.GameLibrary.Entities;
 using Xemio.GameLibrary.Math;
 using Xemio.GameLibrary.Plugins.Implementations;
 using Xemio.GameLibrary.Rendering;
 using Xemio.GameLibrary.Rendering.Sprites;
 
-namespace Xemio.Adventure.Worlds.Serialization.Formats
+namespace Xemio.Adventure.Worlds.Serialization.Json
 {
     public class JsonMapFormat : IMapFormat
     {
@@ -43,15 +42,15 @@ namespace Xemio.Adventure.Worlds.Serialization.Formats
         public Map Parse(string input)
         {
             JObject jsonMap = JObject.Parse(input);
+            ObjectStorage mapProperties = JsonHelper.CreateObjectStorage(jsonMap["properties"]);
 
-            JToken jsonMapName = jsonMap["properties"]["Name"];
-            if (jsonMapName == null)
+            if (!mapProperties.Contains("Name"))
             {
                 throw new InvalidOperationException(
                     "Your map has to contain the property 'Name' inside the map properties, to be uniquely identifiable.");
             }
 
-            string name = jsonMapName.Value<string>();
+            string name = mapProperties.Retrieve<string>("Name");
 
             int width = jsonMap["width"].Value<int>();
             int height = jsonMap["height"].Value<int>();
@@ -72,7 +71,10 @@ namespace Xemio.Adventure.Worlds.Serialization.Formats
             {
                 string fileName = jsonTileset["image"].Value<string>();
                 ITexture texture = this._factory.CreateTexture(fileName);
- 
+
+                ObjectStorage tileSetProperties = JsonHelper
+                    .CreateObjectStorage(jsonTileset["properties"]);
+                
                 SpriteSheet tileSheet = new SpriteSheet(
                     texture,
                     jsonTileset["tilewidth"].Value<int>(),
@@ -80,50 +82,55 @@ namespace Xemio.Adventure.Worlds.Serialization.Formats
                 
                 TileSet tileSet = new TileSet(
                     jsonTileset["name"].Value<string>(),
-                    jsonTileset["firstgid"].Value<int>());
+                    jsonTileset["firstgid"].Value<int>(),
+                    tileSetProperties);
 
-                if (jsonTileset["properties"]["IsEntity"] != null)
+                if (tileSetProperties.Contains("IsEntity"))
                 {
                     entityTileSets.Add(tileSet);
                 }
 
-                JToken jsonTilePropertyToken = jsonTileset["tileproperties"];
+                JToken jsonTileProperties = jsonTileset["tileproperties"];
                 for (int i = 0; i < tileSheet.Textures.Length; i++)
                 {
                     string tileId = "Default";
 
                     string namedIndex = i.ToString();
-                    JToken currentValue = default(JToken);
-
-                    if (jsonTilePropertyToken != null &&
-                        jsonTilePropertyToken
-                            .Value<JObject>()
-                            .TryGetValue(namedIndex, out currentValue))
+                    ObjectStorage tileProperties = new ObjectStorage();
+                    
+                    if (jsonTileProperties != null && 
+                        jsonTileProperties[namedIndex] != null)
                     {
-                        if (currentValue["TileId"] != null)
-                        {
-                            tileId = currentValue["TileId"].Value<string>();
-                        }
-                        if (currentValue["EntityId"] != null)
+                        tileProperties = JsonHelper.CreateObjectStorage(jsonTileProperties[namedIndex]);
+
+                        if (tileProperties.Contains("EntityId"))
                         {
                             entityIds.Add(
-                                tileSet.FirstTileIndex + i,
-                                currentValue["EntityId"].Value<string>());
+                                tileSet.StartIndex + i,
+                                tileProperties.Retrieve<string>("EntityId"));
+                        }
+
+                        if (tileProperties.Contains("TileId"))
+                        {
+                            tileId = tileProperties.Retrieve<string>("TileId");
                         }
                     }
 
-                    //TODO: animation data as tile properties inside tiled.
-                    TileReference reference = new TileReference(
-                        this._implementations.Get<string, Tile>(tileId),
-                        new Animation("Main", tileSheet.Textures[i]));
+                    Tile tile = this._implementations.Get<string, Tile>(tileId);
+                    Animation animation = new Animation("Main", tileSheet.Textures[i]);
                     
-                    tileSet.Tiles.Add(reference);
+                    //TODO: animation data as tile properties inside tiled.
+                    tileSet.Tiles.Add(new TileReference(tile, animation, tileProperties));
                 }
 
                 tileSets.Add(tileSet);
             }
 
-            Map map = new Map(name, tileSets, width, height, tileWidth, tileHeight, layers);
+            MapHeader header = new MapHeader(name, mapProperties);
+
+            MapProperties properties = new MapProperties(width, height, tileWidth, tileHeight, layers);
+            Map map = new Map(header, tileSets, properties);
+            
             int layerIndex = 0;
 
             foreach (JObject jsonLayer in jsonLayers)
@@ -135,6 +142,9 @@ namespace Xemio.Adventure.Worlds.Serialization.Formats
                             JArray jsonObjects = jsonLayer["objects"].Value<JArray>();
                             foreach (JObject jsonValue in jsonObjects)
                             {
+                                ObjectStorage entityProperties = JsonHelper
+                                    .CreateObjectStorage(jsonValue["properties"]);
+
                                 int tileId = jsonValue["gid"].Value<int>();
                                 Vector2 position = new Vector2(
                                     jsonValue["x"].Value<int>(),
@@ -142,7 +152,8 @@ namespace Xemio.Adventure.Worlds.Serialization.Formats
 
                                 //TODO: properties for EntityDataContainer
 
-                                TileReference reference = map.GetTile(tileId);
+                                TileSet tileSet = map.GetTileSet(tileId);
+                                TileReference reference = tileSet.GetTile(tileId);
 
                                 Entity entity = this._implementations
                                     .GetNew<string, LinkableEntity>(entityIds[tileId]);
@@ -152,7 +163,12 @@ namespace Xemio.Adventure.Worlds.Serialization.Formats
                                 var animationComponent = new AnimationComponent(
                                     entity, reference.Animation.Animation);
 
+                                var propertyComponent = new PropertyComponent(
+                                    entity, entityProperties);
+
                                 entity.Components.Add(animationComponent);
+                                entity.Components.Add(propertyComponent);
+
                                 map.Environment.Add(entity);
                             }
                         }
@@ -178,6 +194,17 @@ namespace Xemio.Adventure.Worlds.Serialization.Formats
                             layerIndex++;
                         }
                         break;
+                }
+            }
+            
+            if (mapProperties.Contains("GeneratorId"))
+            {
+                string generatorId = mapProperties.Retrieve<string>("GeneratorId");
+                IMapGenerator generator = this._implementations.Get<string, IMapGenerator>(generatorId);
+
+                if (generator != null)
+                {
+                    generator.Generate(map, "");
                 }
             }
 

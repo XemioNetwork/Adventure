@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Xemio.GameLibrary.Events.Logging;
+﻿using Xemio.GameLibrary.Events.Logging;
 
-namespace Xemio.Adventure.Worlds.TileEngine.Events
+namespace Xemio.Adventure.Worlds.Events
 {
     internal class TilesetNotFoundLoggingEvent : LoggingEvent
     {

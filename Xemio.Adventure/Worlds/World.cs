@@ -39,7 +39,7 @@ namespace Xemio.Adventure.Worlds
         /// <param name="name">The name.</param>
         public void ChangeMap(string name)
         {
-            this.ActiveMap = this.Maps.FirstOrDefault(map => map.Name == name);
+            this.ActiveMap = this.Maps.FirstOrDefault(map => map.Header.Name == name);
         }
         /// <summary>
         /// Handles a game tick.

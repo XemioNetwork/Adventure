@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Xemio.GameLibrary.Common;
 using Xemio.GameLibrary.Rendering;
 using Xemio.GameLibrary.Rendering.Sprites;
 
@@ -12,11 +13,13 @@ namespace Xemio.Adventure.Worlds.TileEngine.Tiles
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="firstTileIndex">First index of the tile.</param>
-        public TileSet(string name, int firstTileIndex)
+        /// <param name="properties">The properties.</param>
+        public TileSet(string name, int firstTileIndex, ObjectStorage properties)
         {
             this.Name = name;
             this.Tiles = new List<TileReference>();
-            this.FirstTileIndex = firstTileIndex;
+            this.StartIndex = firstTileIndex;
+            this.Properties = properties;
         }
         #endregion
 
@@ -32,7 +35,11 @@ namespace Xemio.Adventure.Worlds.TileEngine.Tiles
         /// <summary>
         /// Gets the first index of the tile.
         /// </summary>
-        public int FirstTileIndex { get; private set; }
+        public int StartIndex { get; private set; }
+        /// <summary>
+        /// Gets the properties.
+        /// </summary>
+        public ObjectStorage Properties { get; private set; }
         #endregion
 
         #region Methods
@@ -42,7 +49,7 @@ namespace Xemio.Adventure.Worlds.TileEngine.Tiles
         /// <param name="tileIndex">Index of the tile.</param>
         public bool HasIndex(int tileIndex)
         {
-            int listIndex = tileIndex - this.FirstTileIndex;
+            int listIndex = tileIndex - this.StartIndex;
             return listIndex >= 0 && listIndex < this.Tiles.Count;
         }
         /// <summary>
@@ -51,7 +58,7 @@ namespace Xemio.Adventure.Worlds.TileEngine.Tiles
         /// <param name="tileIndex">Index of the tile.</param>
         public TileReference GetTile(int tileIndex)
         {
-            return this.Tiles[tileIndex - this.FirstTileIndex];
+            return this.Tiles[tileIndex - this.StartIndex];
         }
         #endregion
     }

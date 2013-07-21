@@ -13,6 +13,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -64,19 +66,28 @@
     <Compile Include="Scenes\LoadingScene.cs" />
     <Compile Include="Scenes\MainScene.cs" />
     <Compile Include="Scenes\SplashScreen.cs" />
-    <Compile Include="Worlds\Camera.cs" />
-    <Compile Include="Worlds\CameraMode.cs" />
+    <Compile Include="Worlds\Cameras\EntityCamera.cs" />
+    <Compile Include="Worlds\Cameras\FreeCamera.cs" />
+    <Compile Include="Worlds\Cameras\ICamera.cs" />
     <Compile Include="Worlds\Entities\Components\AnimationComponent.cs" />
+    <Compile Include="Worlds\Entities\Components\PropertyComponent.cs" />
     <Compile Include="Worlds\Entities\LinkableEntity.cs" />
     <Compile Include="Worlds\Entities\LinkableEntityRenderer.cs" />
     <Compile Include="Worlds\Entities\TestEntity.cs" />
-    <Compile Include="Worlds\Serialization\Formats\IMapFormat.cs" />
-    <Compile Include="Worlds\Serialization\Formats\JsonMapFormat.cs" />
+    <Compile Include="Worlds\Generation\DefaultGenerator.cs" />
+    <Compile Include="Worlds\Generation\IMapGenerator.cs" />
+    <Compile Include="Worlds\Generation\GrayGenerator.cs" />
+    <Compile Include="Worlds\MapHeader.cs" />
+    <Compile Include="Worlds\MapProperties.cs" />
+    <Compile Include="Worlds\Serialization\IMapFormat.cs" />
+    <Compile Include="Worlds\Serialization\Json\JsonHelper.cs" />
+    <Compile Include="Worlds\Serialization\Json\JsonMapFormat.cs" />
+    <Compile Include="Worlds\Serialization\Json\JsonObjectStorage.cs" />
     <Compile Include="Worlds\Serialization\MapReader.cs" />
     <Compile Include="Worlds\TileEngine\Components\ITileComponent.cs" />
     <Compile Include="Worlds\TileEngine\Components\RenderingComponent.cs" />
-    <Compile Include="Worlds\TileEngine\Events\FieldOutOfRangeLoggingEvent.cs" />
-    <Compile Include="Worlds\TileEngine\Events\TilesetNotFoundLoggingEvent.cs" />
+    <Compile Include="Worlds\Events\MapBoundaryLoggingEvent.cs" />
+    <Compile Include="Worlds\Events\TilesetNotFoundLoggingEvent.cs" />
     <Compile Include="Worlds\TileEngine\Field.cs" />
     <Compile Include="Worlds\TileEngine\Tiles\TileReference.cs" />
     <Compile Include="Worlds\Map.cs" />
@@ -114,11 +125,14 @@
     <Folder Include="Scripts\" />
     <Folder Include="UI\" />
     <Folder Include="Worlds\Entities\Items\" />
+    <Folder Include="Worlds\Generation\Dungeons\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Libraries\XGL.dll" />
     <Content Include="Libraries\XGL.Rendering.GDIPlus.dll" />
-    <None Include="Resources\loading.png" />
+    <None Include="Resources\loading.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\sword.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -131,6 +145,7 @@
     <None Include="Resources\xemioIntro.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
