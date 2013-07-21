@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{884351
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CFF8319C-C8CB-4DD7-9DAF-1C703135A515}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Adventure.AnimationEditor", "Tools\Xemio.Adventure.AnimationEditor\Xemio.Adventure.AnimationEditor.csproj", "{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -20,8 +24,15 @@ Global
 		{99744D5C-C935-4850-B565-F295E9060A45}.Debug|x86.Build.0 = Debug|x86
 		{99744D5C-C935-4850-B565-F295E9060A45}.Release|x86.ActiveCfg = Release|x86
 		{99744D5C-C935-4850-B565-F295E9060A45}.Release|x86.Build.0 = Release|x86
+		{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68}.Debug|x86.ActiveCfg = Debug|x86
+		{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68}.Debug|x86.Build.0 = Debug|x86
+		{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68}.Release|x86.ActiveCfg = Release|x86
+		{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68} = {CFF8319C-C8CB-4DD7-9DAF-1C703135A515}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,10 @@
+{
+	"Width": 14,
+	"Height": 14,
+	"Animations": {
+		"IdleDown": {
+			"Length": 1,
+			"Row": 0
+		}
+	}
+}

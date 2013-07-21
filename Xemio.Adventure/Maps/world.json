@@ -160,7 +160,6 @@
  "orientation":"orthogonal",
  "properties":
     {
-     "GeneratorId":"GrayGenerator",
      "Name":"test"
     },
  "tileheight":32,
