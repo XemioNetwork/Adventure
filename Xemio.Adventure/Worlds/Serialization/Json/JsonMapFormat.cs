@@ -8,6 +8,7 @@ using Xemio.Adventure.Worlds.Generation;
 using Xemio.Adventure.Worlds.TileEngine.Tiles;
 using Xemio.GameLibrary;
 using Xemio.GameLibrary.Common;
+using Xemio.GameLibrary.Content;
 using Xemio.GameLibrary.Entities;
 using Xemio.GameLibrary.Math;
 using Xemio.GameLibrary.Plugins.Implementations;
@@ -26,12 +27,14 @@ namespace Xemio.Adventure.Worlds.Serialization.Json
         {
             this._factory = XGL.Components.Get<ITextureFactory>();
             this._implementations = XGL.Components.Get<ImplementationManager>();
+            this._content = XGL.Components.Get<ContentManager>();
         }
         #endregion
 
         #region Fields
         private readonly ITextureFactory _factory;
         private readonly ImplementationManager _implementations;
+        private readonly ContentManager _content;
         #endregion
 
         #region Implementation of IParser<string, Map>
@@ -43,7 +46,7 @@ namespace Xemio.Adventure.Worlds.Serialization.Json
         {
             JObject jsonMap = JObject.Parse(input);
             ObjectStorage mapProperties = JsonHelper.CreateObjectStorage(jsonMap["properties"]);
-
+            
             if (!mapProperties.Contains("Name"))
             {
                 throw new InvalidOperationException(
@@ -70,6 +73,11 @@ namespace Xemio.Adventure.Worlds.Serialization.Json
             foreach (JObject jsonTileset in jsonTilesets)
             {
                 string fileName = jsonTileset["image"].Value<string>();
+                
+                //TODO: logging
+                if (!this._content.FileSystem.Exists(fileName))
+                    continue;
+
                 ITexture texture = this._factory.CreateTexture(fileName);
 
                 ObjectStorage tileSetProperties = JsonHelper
@@ -151,6 +159,12 @@ namespace Xemio.Adventure.Worlds.Serialization.Json
                                 //TODO: properties for EntityDataContainer
 
                                 TileSet tileSet = map.GetTileSet(tileId);
+                                if (tileSet == null)
+                                {
+                                    //TODO: logging
+                                    continue;
+                                }
+
                                 TileReference reference = tileSet.GetTile(tileId);
 
                                 Entity entity = this._implementations
