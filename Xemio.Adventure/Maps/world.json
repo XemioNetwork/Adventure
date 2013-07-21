@@ -117,7 +117,7 @@
  "orientation":"orthogonal",
  "properties":
     {
-
+     "Name":"test"
     },
  "tileheight":32,
  "tilesets":[

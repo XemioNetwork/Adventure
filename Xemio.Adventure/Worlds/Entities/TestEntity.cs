@@ -22,7 +22,7 @@ namespace Xemio.Adventure.Worlds.Entities
         #region Methods
         public override void Tick(float elapsed)
         {
-            this.Position += new Vector2(2, 2);
+            this.Position += new Vector2(1, 1);
         }
         #endregion
     }

@@ -7,6 +7,7 @@ using Xemio.Adventure.Properties;
 using Xemio.GameLibrary.Game.Scenes;
 using Xemio.GameLibrary.Math;
 using Xemio.GameLibrary.Rendering;
+using Xemio.GameLibrary.Rendering.Geometry;
 
 namespace Xemio.Adventure.Scenes
 {
@@ -63,14 +64,17 @@ namespace Xemio.Adventure.Scenes
         {
             DisplayMode displayMode = this.GraphicsDevice.DisplayMode;
 
-            this.RenderManager.Clear(new Color(221, 221, 221));
+            this.GraphicsDevice.Clear(new Color(221, 221, 221));
             this.RenderManager.Render(this._texture,
                 new Vector2(
                     displayMode.Center.X - this._texture.Width * 0.5f,
                     displayMode.Center.Y - this._texture.Height * 0.5f));
 
+            Color color = new Color(0, 0, 0, this._alpha);
+            IBrush brush = this.Geometry.Factory.CreateSolid(color);
+
             this.Geometry.FillRectangle(
-                this.Geometry.Factory.CreateSolid(new Color(0.0f, 0.0f, 0.0f, this._alpha)),
+                brush,
                 new Rectangle(0, 0, displayMode.Width, displayMode.Height));
         }
         #endregion

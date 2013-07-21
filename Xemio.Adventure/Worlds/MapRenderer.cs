@@ -12,14 +12,14 @@ using Xemio.GameLibrary.Rendering;
 
 namespace Xemio.Adventure.Worlds
 {
-    public class WorldRenderer
+    public class MapRenderer
     {
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorldRenderer"/> class.
+        /// Initializes a new instance of the <see cref="MapRenderer"/> class.
         /// </summary>
         /// <param name="world">The world.</param>
-        public WorldRenderer(World world)
+        public MapRenderer(Map world)
         {
             this.World = world;
         }
@@ -29,7 +29,7 @@ namespace Xemio.Adventure.Worlds
         /// <summary>
         /// Gets the world.
         /// </summary>
-        public World World { get; private set; }
+        public Map World { get; private set; }
         #endregion
 
         #region Methods

@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.IO;
 using Newtonsoft.Json.Linq;
 using Xemio.Adventure.Worlds.Entities;
 using Xemio.Adventure.Worlds.Entities.Components;
 using Xemio.Adventure.Worlds.TileEngine.Tiles;
 using Xemio.GameLibrary;
-using Xemio.GameLibrary.Common;
 using Xemio.GameLibrary.Entities;
 using Xemio.GameLibrary.Math;
 using Xemio.GameLibrary.Plugins.Implementations;
 using Xemio.GameLibrary.Rendering;
 using Xemio.GameLibrary.Rendering.Sprites;
 
-namespace Xemio.Adventure.Worlds
+namespace Xemio.Adventure.Worlds.Serialization.Formats
 {
-    public class WorldParser : IParser<string, World>
+    public class JsonMapFormat : IMapFormat
     {
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorldParser"/> class.
+        /// Initializes a new instance of the <see cref="JsonMapFormat"/> class.
         /// </summary>
-        public WorldParser()
+        public JsonMapFormat()
         {
             this._factory = XGL.Components.Get<ITextureFactory>();
             this._implementations = XGL.Components.Get<ImplementationManager>();
@@ -35,26 +35,34 @@ namespace Xemio.Adventure.Worlds
         private readonly ImplementationManager _implementations;
         #endregion
 
-        #region Implementation of IParser<in string,out Map>
+        #region Implementation of IParser<string, Map>
         /// <summary>
         /// Parses the specified input.
         /// </summary>
         /// <param name="input">The input.</param>
-        public World Parse(string input)
+        public Map Parse(string input)
         {
-            Stopwatch watch = Stopwatch.StartNew();
-            JObject jsonWorld = JObject.Parse(input);
+            JObject jsonMap = JObject.Parse(input);
 
-            int width = jsonWorld["width"].Value<int>();
-            int height = jsonWorld["height"].Value<int>();
+            JToken jsonMapName = jsonMap["properties"]["Name"];
+            if (jsonMapName == null)
+            {
+                throw new InvalidOperationException(
+                    "Your map has to contain the property 'Name' inside the map properties, to be uniquely identifiable.");
+            }
 
-            int tileWidth = jsonWorld["tilewidth"].Value<int>();
-            int tileHeight = jsonWorld["tileheight"].Value<int>();
+            string name = jsonMapName.Value<string>();
 
-            int layers = jsonWorld["layers"].Count(t => t["type"].Value<string>() == "tilelayer");
+            int width = jsonMap["width"].Value<int>();
+            int height = jsonMap["height"].Value<int>();
 
-            JArray jsonTilesets = jsonWorld["tilesets"].Value<JArray>();
-            JArray jsonLayers = jsonWorld["layers"].Value<JArray>();
+            int tileWidth = jsonMap["tilewidth"].Value<int>();
+            int tileHeight = jsonMap["tileheight"].Value<int>();
+
+            int layers = jsonMap["layers"].Count(t => t["type"].Value<string>() == "tilelayer");
+
+            JArray jsonTilesets = jsonMap["tilesets"].Value<JArray>();
+            JArray jsonLayers = jsonMap["layers"].Value<JArray>();
 
             List<TileSet> tileSets = new List<TileSet>();
             List<TileSet> entityTileSets = new List<TileSet>();
@@ -78,7 +86,6 @@ namespace Xemio.Adventure.Worlds
                 {
                     entityTileSets.Add(tileSet);
                 }
-
 
                 JToken jsonTilePropertyToken = jsonTileset["tileproperties"];
                 for (int i = 0; i < tileSheet.Textures.Length; i++)
@@ -116,7 +123,7 @@ namespace Xemio.Adventure.Worlds
                 tileSets.Add(tileSet);
             }
 
-            World world = new World(tileSets, width, height, tileWidth, tileHeight, layers);
+            Map map = new Map(name, tileSets, width, height, tileWidth, tileHeight, layers);
             int layerIndex = 0;
 
             foreach (JObject jsonLayer in jsonLayers)
@@ -135,19 +142,18 @@ namespace Xemio.Adventure.Worlds
 
                                 //TODO: properties for EntityDataContainer
 
-                                TileReference reference = world.GetTile(tileId);
+                                TileReference reference = map.GetTile(tileId);
 
                                 Entity entity = this._implementations
-                                    .Get<string, LinkableEntity>(entityIds[tileId]);
+                                    .GetNew<string, LinkableEntity>(entityIds[tileId]);
 
-                                Entity instance = (Entity)Activator.CreateInstance(entity.GetType());
-                                instance.Position = position;
+                                entity.Position = position;
 
                                 var animationComponent = new AnimationComponent(
-                                    instance, reference.Animation.Animation);
+                                    entity, reference.Animation.Animation);
 
-                                instance.Components.Add(animationComponent);
-                                world.Environment.Add(instance);
+                                entity.Components.Add(animationComponent);
+                                map.Environment.Add(entity);
                             }
                         }
                         break;
@@ -160,9 +166,9 @@ namespace Xemio.Adventure.Worlds
 
                             foreach (JValue jsonValue in jsonData)
                             {
-                                world.SetField(x, y, layerIndex, jsonValue.Value<int>());
+                                map.SetField(x, y, layerIndex, jsonValue.Value<int>());
 
-                                if (++x >= world.Width)
+                                if (++x >= map.Width)
                                 {
                                     x = 0;
                                     y++;
@@ -177,14 +183,20 @@ namespace Xemio.Adventure.Worlds
 
             foreach (TileSet tileSet in entityTileSets)
             {
-                world.TileSets.Remove(tileSet);
+                map.TileSets.Remove(tileSet);
             }
 
-            watch.Stop();
+            return map;
+        }
+        #endregion
 
-            Debug.WriteLine("Loaded world ({0}ms)", watch.Elapsed.TotalMilliseconds);
-
-            return world;
+        #region Implementation of ILinkable<string>
+        /// <summary>
+        /// Gets the id.
+        /// </summary>
+        public string Id
+        {
+            get { return ".json"; }
         }
         #endregion
     }

@@ -18,29 +18,28 @@ namespace Xemio.Adventure.Scenes
 {
     public class MainScene : Scene
     {
-        #region Fields
-        private World _world;
-        #endregion
-        
-        #region Methods
+        #region Constructors
         /// <summary>
-        /// Loads the content.
+        /// Initializes a new instance of the <see cref="MainScene"/> class.
         /// </summary>
-        public override void LoadContent()
+        /// <param name="world">The world.</param>
+        public MainScene(World world)
         {
-            WorldParser parser = new WorldParser();
-            this._world = parser.Parse(
-                File.ReadAllText("Resources/world.json", Encoding.Default));
-
-            this._world.ActiveCamera = new Camera();
+            this._world = world;
         }
+        #endregion
+
+        #region Fields
+        private readonly World _world;
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Handles a game tick.
         /// </summary>
         /// <param name="elapsed">The elapsed.</param>
         public override void Tick(float elapsed)
         {
-            this._world.ActiveCamera.Position += new Vector2(1, 1);
             this._world.Tick(elapsed);
         }
         /// <summary>
@@ -48,7 +47,7 @@ namespace Xemio.Adventure.Scenes
         /// </summary>
         public override void Render()
         {
-            this._world.Renderer.Render();
+            this._world.Render();
         }
         #endregion
     }
