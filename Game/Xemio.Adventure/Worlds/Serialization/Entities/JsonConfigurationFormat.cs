@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Xemio.Adventure.Worlds.Entities;
 using Xemio.GameLibrary;
 using Xemio.GameLibrary.Common;
+using Xemio.GameLibrary.Content;
 using Xemio.GameLibrary.Math;
+using Xemio.GameLibrary.Math.Collision;
 using Xemio.GameLibrary.Rendering;
 using Xemio.GameLibrary.Rendering.Sprites;
 
@@ -23,27 +26,26 @@ namespace Xemio.Adventure.Worlds.Serialization.Entities
         {
             JObject root = JObject.Parse(input);
             ObjectStorage storage = JsonHelper.CreateObjectStorage(root);
-            ITextureFactory factory = XGL.Components.Get<ITextureFactory>();
 
+            ContentManager content = XGL.Components.Get<ContentManager>();
+
+            string currentDirectory = Path.GetDirectoryName(fileName);
             string imageFile = storage.Retrieve<string>("Image");
-            ITexture texture = factory.CreateTexture(imageFile);
+
+            ITexture texture = content.Load<ITexture>(Path.Combine(currentDirectory, imageFile));
 
             int frameWidth = storage.Retrieve<int>("FrameWidth");
             int frameHeight = storage.Retrieve<int>("FrameHeight");
             
-            Vector2 offset = new Vector2(
-                storage.Retrieve<int>("OffsetX"),
-                storage.Retrieve<int>("OffsetY"));
-
             bool collidable = storage.Retrieve<bool>("Collidable");
 
             SpriteSheet sheet = new SpriteSheet(texture, frameWidth, frameHeight);
             int frameTime = storage.Retrieve<int>("FrameTime");
 
-            Rectangle bounds = storage.Retrieve<Rectangle>("BoundingBox");
-            BoundingBox boundingBox = new BoundingBox(
-                new Vector2(bounds.X, bounds.Y),
-                new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height));
+            string collisionMapFile = storage.Retrieve<string>("CollisionMap");
+
+            CollisionMap collisionMap = content.Load<CollisionMap, FormatReader<CollisionMap>>(
+                Path.Combine(currentDirectory, collisionMapFile));
 
             JObject jsonAnimations = storage.Retrieve<JObject>("Animations");
 
@@ -72,7 +74,7 @@ namespace Xemio.Adventure.Worlds.Serialization.Entities
                 rowIndex++;
             }
 
-            return new EntityConfiguration(offset, boundingBox, collidable, list);
+            return new EntityConfiguration(collisionMap, collidable, list);
         }
         #endregion
 

@@ -70,8 +70,8 @@
     <Compile Include="Worlds\Cameras\FreeCamera.cs" />
     <Compile Include="Worlds\Cameras\ICamera.cs" />
     <Compile Include="Worlds\Entities\Characters\HeroEntity.cs" />
+    <Compile Include="Worlds\Entities\Characters\TestEntity.cs" />
     <Compile Include="Worlds\Entities\Components\AnimationComponent.cs" />
-    <Compile Include="Worlds\Entities\Components\CollisionComponent.cs" />
     <Compile Include="Worlds\Entities\Components\Movement\InputComponent.cs" />
     <Compile Include="Worlds\Entities\Components\Movement\MovementComponent.cs" />
     <Compile Include="Worlds\Entities\Components\PropertyComponent.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="Worlds\Serialization\Entities\XmlConfigurationFormat.cs" />
     <Compile Include="Worlds\Serialization\FormatReader.cs" />
     <Compile Include="Worlds\Serialization\IFormat.cs" />
+    <Compile Include="Worlds\Serialization\JsonCollisionMapFormat.cs" />
     <Compile Include="Worlds\Serialization\JsonHelper.cs" />
     <Compile Include="Worlds\Serialization\Maps\JsonMapFormat.cs" />
     <Compile Include="Worlds\TileEngine\Components\ITileComponent.cs" />
@@ -359,6 +360,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Entities\chest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Entities\clotharmor-collision.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Entities\clotharmor.json">

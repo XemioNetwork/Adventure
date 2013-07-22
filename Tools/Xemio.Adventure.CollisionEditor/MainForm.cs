@@ -76,6 +76,9 @@ namespace Xemio.Adventure.CollisionEditor
                         .ToArray();
 
                     JObject root = new JObject(
+                        new JProperty("Width", this.collisionControl.MapWidth),
+                        new JProperty("Height", this.collisionControl.MapHeight),
+                        new JProperty("CellSize", this.collisionControl.CellSize),
                         new JProperty("CollisionMap", new JArray(values)));
 
                     using (FileStream stream = File.Open(fileDialog.FileName, FileMode.CreateNew))

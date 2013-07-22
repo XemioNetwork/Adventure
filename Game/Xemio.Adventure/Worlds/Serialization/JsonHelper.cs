@@ -44,10 +44,14 @@ namespace Xemio.Adventure.Worlds.Serialization
                 {
                     storage.Store(key, token as JObject);
                 }
-                else
+                else if (token is JValue)
                 {
                     JValue value = token.Value<JValue>();
                     storage.Store(key, value.Value);
+                }
+                else
+                {
+                    storage.Store(key, token);
                 }
             }
 

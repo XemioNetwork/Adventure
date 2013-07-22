@@ -11,9 +11,12 @@ using Xemio.Adventure.Worlds.Entities;
 using Xemio.Adventure.Worlds.Serialization;
 using Xemio.Adventure.Worlds.TileEngine.Tiles;
 using Xemio.GameLibrary;
+using Xemio.GameLibrary.Entities;
+using Xemio.GameLibrary.Events;
 using Xemio.GameLibrary.Game.Scenes;
 using Xemio.GameLibrary.Game.Timing;
 using Xemio.GameLibrary.Math;
+using Xemio.GameLibrary.Math.Collision.Events;
 using Xemio.GameLibrary.Rendering.GDIPlus;
 
 namespace Xemio.Adventure.Scenes

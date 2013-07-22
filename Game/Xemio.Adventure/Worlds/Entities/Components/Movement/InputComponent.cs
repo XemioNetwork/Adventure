@@ -61,8 +61,6 @@ namespace Xemio.Adventure.Worlds.Entities.Components.Movement
                 eventManager.Publish(new StopMovementEvent(this.Entity, this.Entity.Position, direction));
             }
 
-            Debug.WriteLine(direction);
-
             this._lastDirection = direction;
         }
         #endregion

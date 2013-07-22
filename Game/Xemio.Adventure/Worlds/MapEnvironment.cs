@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Xemio.Adventure.Worlds.Entities.Components;
 using Xemio.GameLibrary.Entities;
+using Xemio.GameLibrary.Math.Collision.Entities;
 
 namespace Xemio.Adventure.Worlds
 {
-    public class MapEnvironment : EntityEnvironment
+    public class MapEnvironment : CollisionEnvironment
     {
         #region Constructors
         /// <summary>
@@ -15,6 +17,10 @@ namespace Xemio.Adventure.Worlds
         /// </summary>
         /// <param name="map">The map.</param>
         public MapEnvironment(Map map)
+            : base(
+                map.Bounds.Width * map.Bounds.TileHeight / 4,
+                map.Bounds.Height * map.Bounds.TileHeight / 4,
+                4)
         {
             this.Map = map;
         }
@@ -25,6 +31,19 @@ namespace Xemio.Adventure.Worlds
         /// Gets the map.
         /// </summary>
         public Map Map { get; private set; }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Sorts the entity collection.
+        /// </summary>
+        protected override IEnumerable<Entity> SortedEntityCollection()
+        {
+            return this.Entities.OrderBy(
+                entity => entity.Position.Y + (entity.GetComponent<AnimationComponent>() != null
+                              ? entity.GetComponent<AnimationComponent>().Current.Frame.Height
+                              : 0));
+        }
         #endregion
     }
 }

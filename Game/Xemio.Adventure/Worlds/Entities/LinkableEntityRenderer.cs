@@ -6,6 +6,7 @@ using System.IO;
 using Xemio.Adventure.Worlds.Entities.Components;
 using Xemio.GameLibrary.Entities;
 using Xemio.GameLibrary.Math;
+using Xemio.GameLibrary.Math.Collision.Entities;
 using Xemio.GameLibrary.Rendering;
 
 namespace Xemio.Adventure.Worlds.Entities
@@ -48,6 +49,31 @@ namespace Xemio.Adventure.Worlds.Entities
                     this.Entity.Position + this.Offset,
                     this.Color);
             }
+
+            /*var environment = this.Entity.Environment as MapEnvironment;
+            var red = this.Geometry.Factory.CreateSolid(new Color(1.0f, 0.0f, 0.0f, 0.8f));
+            var collisionComponent = this.Entity.GetComponent<CollisionComponent>();
+
+            for (int x = 0; x < collisionComponent.CollisionMap.Width; x++)
+            {
+                for (int y = 0; y < collisionComponent.CollisionMap.Height; y++)
+                {
+                    if (!collisionComponent.CollisionMap.Cells[x, y])
+                        continue;
+
+                    int cellSize = environment.Grid.CellSize;
+
+                    float ex = this.Entity.Position.X + x * cellSize;
+                    float ey = this.Entity.Position.Y + y * cellSize;
+
+                    this.Geometry.FillRectangle(red,
+                        new Rectangle(
+                            cellSize * ((int)ex / cellSize),
+                            cellSize * ((int)ey / cellSize),
+                            cellSize,
+                            cellSize));
+                }
+            }*/
         }
         #endregion
     }

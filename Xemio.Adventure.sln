@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Adventure.AnimationEd
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{15C1081C-3C24-4482-9CDA-8FD722C3D7EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Adventure.CollisionEditor", "Xemio.Adventure.CollisionEditor\Xemio.Adventure.CollisionEditor.csproj", "{6083B055-D493-43E0-BD12-FA1A77DE072B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Adventure.CollisionEditor", "Tools\Xemio.Adventure.CollisionEditor\Xemio.Adventure.CollisionEditor.csproj", "{6083B055-D493-43E0-BD12-FA1A77DE072B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

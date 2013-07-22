@@ -1,8 +1,10 @@
-﻿using Xemio.Adventure.Worlds.Entities.Events.Movement;
+﻿using System;
+using Xemio.Adventure.Worlds.Entities.Events.Movement;
 using Xemio.GameLibrary;
 using Xemio.GameLibrary.Entities;
 using Xemio.GameLibrary.Events;
 using Xemio.GameLibrary.Math;
+using Xemio.GameLibrary.Math.Collision.Entities;
 
 namespace Xemio.Adventure.Worlds.Entities.Components.Movement
 {
@@ -17,13 +19,22 @@ namespace Xemio.Adventure.Worlds.Entities.Components.Movement
         {
             var eventManager = XGL.Components.Get<EventManager>();
             eventManager.Subscribe<IMovementEvent>(this.HandleMovement);
+
+            this.Speed = 2;
         }
         #endregion
-
-        #region Fields
-        private Vector2 _direction;
-        #endregion
         
+        #region Properties
+        /// <summary>
+        /// Gets or sets the speed.
+        /// </summary>
+        public int Speed { get; set; }
+        /// <summary>
+        /// Gets or sets the direction.
+        /// </summary>
+        public Vector2 Direction { get; private set; }
+        #endregion
+
         #region Methods
         /// <summary>
         /// Handles the movement.
@@ -37,10 +48,49 @@ namespace Xemio.Adventure.Worlds.Entities.Components.Movement
                 var stopMovement = e as StopMovementEvent;
 
                 if (startMovement != null)
-                    this._direction = e.Direction.ToVector2();
+                    this.Direction = e.Direction.ToVector2();
 
                 if (stopMovement != null)
-                    this._direction = Vector2.Zero;
+                    this.Direction = Vector2.Zero;
+            }
+        }
+        /// <summary>
+        /// Moves to the specified direction.
+        /// </summary>
+        /// <param name="direction">The direction.</param>
+        public void Move(Vector2 direction)
+        {
+            this.MoveDimension(new Vector2(direction.X, 0));
+            this.MoveDimension(new Vector2(0, direction.Y));
+        }
+        /// <summary>
+        /// Moves dimensional.
+        /// </summary>
+        /// <param name="direction">The direction.</param>
+        protected virtual void MoveDimension(Vector2 direction)
+        {
+            var environment = this.Entity.Environment as MapEnvironment;
+            var collisionComponent = this.Entity.GetComponent<CollisionComponent>();
+
+            if (direction.LengthSquared == 0.0f)
+                return;
+
+            for (int i = 0; i < this.Speed; i++)
+            {
+                this.Entity.Position += direction;
+
+                int x = (int)this.Entity.Position.X / environment.Grid.CellSize;
+                int y = (int)this.Entity.Position.Y / environment.Grid.CellSize;
+                
+                environment.Grid.Update(this.Entity, collisionComponent.CollisionMap);
+
+                if (environment.Grid.Collides(
+                    x, y, this.Entity,
+                    collisionComponent.CollisionMap))
+                {
+                    this.Entity.Position -= direction;
+                    break;
+                }
             }
         }
         /// <summary>
@@ -49,7 +99,7 @@ namespace Xemio.Adventure.Worlds.Entities.Components.Movement
         /// <param name="elapsed">The elapsed.</param>
         public override void Tick(float elapsed)
         {
-            this.Entity.Position += this._direction * 2;
+            this.Move(this.Direction);
         }
         #endregion
     }

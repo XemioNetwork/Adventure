@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Xemio.GameLibrary.Math;
+using Xemio.GameLibrary.Math.Collision;
 using Xemio.GameLibrary.Rendering;
 using Xemio.GameLibrary.Rendering.Sprites;
 
@@ -15,14 +16,12 @@ namespace Xemio.Adventure.Worlds.Entities
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityConfiguration"/> class.
         /// </summary>
-        /// <param name="offset">The offset.</param>
-        /// <param name="boundingBox">The bounding box.</param>
+        /// <param name="collisionMap">The bounding box.</param>
         /// <param name="collidable">if set to <c>true</c> [collidable].</param>
         /// <param name="animations">The animations.</param>
-        public EntityConfiguration(Vector2 offset, BoundingBox boundingBox, bool collidable, IEnumerable<Animation> animations)
+        public EntityConfiguration(CollisionMap collisionMap, bool collidable, IEnumerable<Animation> animations)
         {
-            this.Offset = offset;
-            this.BoundingBox = boundingBox;
+            this.CollisionMap = collisionMap;
             this.Collidable = collidable;
             this.Animations = animations.ToList();
         }
@@ -30,13 +29,9 @@ namespace Xemio.Adventure.Worlds.Entities
 
         #region Properties
         /// <summary>
-        /// Gets the offset.
+        /// Gets the collision map.
         /// </summary>
-        public Vector2 Offset { get; private set; }
-        /// <summary>
-        /// Gets the bounding box.
-        /// </summary>
-        public BoundingBox BoundingBox { get; private set; }
+        public CollisionMap CollisionMap { get; private set; }
         /// <summary>
         /// Gets a value indicating whether this <see cref="EntityConfiguration"/> is collidable.
         /// </summary>

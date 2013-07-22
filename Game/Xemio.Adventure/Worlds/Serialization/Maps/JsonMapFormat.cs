@@ -12,6 +12,7 @@ using Xemio.GameLibrary.Common;
 using Xemio.GameLibrary.Content;
 using Xemio.GameLibrary.Entities;
 using Xemio.GameLibrary.Math;
+using Xemio.GameLibrary.Math.Collision.Entities;
 using Xemio.GameLibrary.Plugins.Implementations;
 using Xemio.GameLibrary.Rendering;
 using Xemio.GameLibrary.Rendering.Sprites;
@@ -181,10 +182,7 @@ namespace Xemio.Adventure.Worlds.Serialization.Maps
                                     .Load<EntityConfiguration, FormatReader<EntityConfiguration>>(configurationFileName);
                                 
                                 entity.Position = position;
-
-                                var renderer = (LinkableEntityRenderer)entity.Renderer;
-                                renderer.Offset = configuration.Offset;
-
+                                
                                 var animationComponent = new AnimationComponent(
                                     entity, configuration.Animations);
 
@@ -192,7 +190,7 @@ namespace Xemio.Adventure.Worlds.Serialization.Maps
                                     entity, entityProperties);
 
                                 var collisionComponent = new CollisionComponent(
-                                    entity, configuration.BoundingBox, configuration.Collidable);
+                                    entity, configuration.CollisionMap);
 
                                 entity.Components.Add(animationComponent);
                                 entity.Components.Add(propertyComponent);

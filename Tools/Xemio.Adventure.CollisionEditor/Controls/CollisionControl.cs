@@ -36,6 +36,18 @@ namespace Xemio.Adventure.CollisionEditor.Controls
         /// Gets or sets the offset.
         /// </summary>
         public Point Offset { get; set; }
+        /// <summary>
+        /// Gets the width of the map.
+        /// </summary>
+        public int MapWidth { get; private set; }
+        /// <summary>
+        /// Gets the height of the map.
+        /// </summary>
+        public int MapHeight { get; private set; }
+        /// <summary>
+        /// Gets the size of the cell.
+        /// </summary>
+        public int CellSize { get; private set; }
         #endregion
 
         #region Methods
@@ -64,6 +76,10 @@ namespace Xemio.Adventure.CollisionEditor.Controls
         /// <param name="cellSize">Size of the cell.</param>
         public void New(int mapWidth, int mapHeight, int cellSize)
         {
+            this.MapWidth = mapWidth;
+            this.MapHeight = mapHeight;
+            this.CellSize = cellSize;
+
             this._collisionMap = new bool[mapWidth, mapHeight];
             this._cellSize = cellSize;
         }
