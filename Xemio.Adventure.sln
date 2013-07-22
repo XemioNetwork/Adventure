@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Adventure", "Xemio.Adventure\Xemio.Adventure.csproj", "{99744D5C-C935-4850-B565-F295E9060A45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Adventure", "Game\Xemio.Adventure\Xemio.Adventure.csproj", "{99744D5C-C935-4850-B565-F295E9060A45}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{88435109-F430-47C3-94DA-41D488084F32}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +13,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CFF8319C-C8CB-4DD7-9DAF-1C703135A515}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Adventure.AnimationEditor", "Tools\Xemio.Adventure.AnimationEditor\Xemio.Adventure.AnimationEditor.csproj", "{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{15C1081C-3C24-4482-9CDA-8FD722C3D7EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Adventure.CollisionEditor", "Xemio.Adventure.CollisionEditor\Xemio.Adventure.CollisionEditor.csproj", "{6083B055-D493-43E0-BD12-FA1A77DE072B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,11 +32,17 @@ Global
 		{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68}.Debug|x86.Build.0 = Debug|x86
 		{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68}.Release|x86.ActiveCfg = Release|x86
 		{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68}.Release|x86.Build.0 = Release|x86
+		{6083B055-D493-43E0-BD12-FA1A77DE072B}.Debug|x86.ActiveCfg = Debug|x86
+		{6083B055-D493-43E0-BD12-FA1A77DE072B}.Debug|x86.Build.0 = Debug|x86
+		{6083B055-D493-43E0-BD12-FA1A77DE072B}.Release|x86.ActiveCfg = Release|x86
+		{6083B055-D493-43E0-BD12-FA1A77DE072B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{99744D5C-C935-4850-B565-F295E9060A45} = {15C1081C-3C24-4482-9CDA-8FD722C3D7EB}
 		{90A9CBBD-C093-47BF-B87E-0D2D8A02EC68} = {CFF8319C-C8CB-4DD7-9DAF-1C703135A515}
+		{6083B055-D493-43E0-BD12-FA1A77DE072B} = {CFF8319C-C8CB-4DD7-9DAF-1C703135A515}
 	EndGlobalSection
 EndGlobal
