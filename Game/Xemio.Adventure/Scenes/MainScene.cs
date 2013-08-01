@@ -30,11 +30,10 @@ namespace Xemio.Adventure.Scenes
         /// <param name="world">The world.</param>
         public MainScene(World world)
         {
-            var config = this.Content.Load<EntityConfiguration, FormatReader<EntityConfiguration>>(
-                "./Resources/Entities/clotharmor.json");
-
             this._world = world;
             this._world.ChangeMap("world");
+
+            this.Add(new HUD());
         }
         #endregion
 

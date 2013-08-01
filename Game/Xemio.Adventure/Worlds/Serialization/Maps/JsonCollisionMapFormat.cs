@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Xemio.GameLibrary.Common;
 using Xemio.GameLibrary.Math.Collision;
 
-namespace Xemio.Adventure.Worlds.Serialization
+namespace Xemio.Adventure.Worlds.Serialization.Maps
 {
     public class JsonCollisionMapFormat : IFormat<CollisionMap>
     {

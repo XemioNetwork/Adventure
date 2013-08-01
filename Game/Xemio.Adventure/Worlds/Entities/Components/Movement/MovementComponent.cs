@@ -32,7 +32,7 @@ namespace Xemio.Adventure.Worlds.Entities.Components.Movement
         /// <summary>
         /// Gets or sets the direction.
         /// </summary>
-        public Vector2 Direction { get; private set; }
+        public Vector2 Direction { get; set; }
         #endregion
 
         #region Methods
@@ -55,51 +55,12 @@ namespace Xemio.Adventure.Worlds.Entities.Components.Movement
             }
         }
         /// <summary>
-        /// Moves to the specified direction.
-        /// </summary>
-        /// <param name="direction">The direction.</param>
-        public void Move(Vector2 direction)
-        {
-            this.MoveDimension(new Vector2(direction.X, 0));
-            this.MoveDimension(new Vector2(0, direction.Y));
-        }
-        /// <summary>
-        /// Moves dimensional.
-        /// </summary>
-        /// <param name="direction">The direction.</param>
-        protected virtual void MoveDimension(Vector2 direction)
-        {
-            var environment = this.Entity.Environment as MapEnvironment;
-            var collisionComponent = this.Entity.GetComponent<CollisionComponent>();
-
-            if (direction.LengthSquared == 0.0f)
-                return;
-
-            for (int i = 0; i < this.Speed; i++)
-            {
-                this.Entity.Position += direction;
-
-                int x = (int)this.Entity.Position.X / environment.Grid.CellSize;
-                int y = (int)this.Entity.Position.Y / environment.Grid.CellSize;
-                
-                environment.Grid.Update(this.Entity, collisionComponent.CollisionMap);
-
-                if (environment.Grid.Collides(
-                    x, y, this.Entity,
-                    collisionComponent.CollisionMap))
-                {
-                    this.Entity.Position -= direction;
-                    break;
-                }
-            }
-        }
-        /// <summary>
         /// Handles a game tick.
         /// </summary>
         /// <param name="elapsed">The elapsed.</param>
         public override void Tick(float elapsed)
         {
-            this.Move(this.Direction);
+            this.Entity.Position += this.Direction * this.Speed;
         }
         #endregion
     }

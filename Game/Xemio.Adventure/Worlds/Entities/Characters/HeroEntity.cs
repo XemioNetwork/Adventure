@@ -38,6 +38,8 @@ namespace Xemio.Adventure.Worlds.Entities.Characters
 
             this.GetComponent<AnimationComponent>()
                 .ChangeAnimation("IdleDown");
+
+            base.Initialize(environment);
         }
         #endregion
 

@@ -63,12 +63,14 @@ namespace Xemio.Adventure.Scenes
         public override void Render()
         {
             DisplayMode displayMode = this.GraphicsDevice.DisplayMode;
+            IRenderTarget t = this.GraphicsDevice.TextureFactory.CreateRenderTarget(400, 300);
 
             this.GraphicsDevice.Clear(new Color(221, 221, 221));
+
             this.RenderManager.Render(this._texture,
-                new Vector2(
-                    displayMode.Center.X - this._texture.Width * 0.5f,
-                    displayMode.Center.Y - this._texture.Height * 0.5f));
+                                        new Vector2(
+                                            displayMode.Center.X - this._texture.Width*0.5f,
+                                            displayMode.Center.Y - this._texture.Height*0.5f));
 
             Color color = new Color(0, 0, 0, this._alpha);
             IBrush brush = this.Geometry.Factory.CreateSolid(color);

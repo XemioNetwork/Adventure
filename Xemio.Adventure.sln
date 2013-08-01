@@ -18,6 +18,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{15C1081C-3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xemio.Adventure.CollisionEditor", "Tools\Xemio.Adventure.CollisionEditor\Xemio.Adventure.CollisionEditor.csproj", "{6083B055-D493-43E0-BD12-FA1A77DE072B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{E21EF393-AAB6-4215-8AAD-0F0FC1CB60E7}"
+	ProjectSection(SolutionItems) = preProject
+		Libraries\jpeg.dll = Libraries\jpeg.dll
+		Libraries\libfreetype-6.dll = Libraries\libfreetype-6.dll
+		Libraries\libogg-0.dll = Libraries\libogg-0.dll
+		Libraries\libpng12-0.dll = Libraries\libpng12-0.dll
+		Libraries\libtiff-3.dll = Libraries\libtiff-3.dll
+		Libraries\libvorbis-0.dll = Libraries\libvorbis-0.dll
+		Libraries\libvorbisfile-3.dll = Libraries\libvorbisfile-3.dll
+		Libraries\SDL.dll = Libraries\SDL.dll
+		Libraries\SDL_gfx.dll = Libraries\SDL_gfx.dll
+		Libraries\SDL_image.dll = Libraries\SDL_image.dll
+		Libraries\SDL_mixer.dll = Libraries\SDL_mixer.dll
+		Libraries\SDL_net.dll = Libraries\SDL_net.dll
+		Libraries\SDL_ttf.dll = Libraries\SDL_ttf.dll
+		Libraries\SdlDotNet.dll = Libraries\SdlDotNet.dll
+		Libraries\smpeg.dll = Libraries\smpeg.dll
+		Libraries\Tao.Sdl.dll = Libraries\Tao.Sdl.dll
+		Libraries\zlib1.dll = Libraries\zlib1.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86

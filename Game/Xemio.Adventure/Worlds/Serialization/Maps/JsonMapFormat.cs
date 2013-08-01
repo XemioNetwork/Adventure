@@ -171,7 +171,7 @@ namespace Xemio.Adventure.Worlds.Serialization.Maps
 
                                 TileReference reference = tileSet.GetTile(tileId);
 
-                                Entity entity = this._implementations
+                                LinkableEntity entity = this._implementations
                                     .GetNew<string, LinkableEntity>(
                                         entityTileProperties[tileId].Retrieve<string>("EntityId"));
 

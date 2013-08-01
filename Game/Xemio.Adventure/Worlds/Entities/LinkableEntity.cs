@@ -5,10 +5,11 @@ using System.Text;
 using System.IO;
 using Xemio.GameLibrary.Common.Link;
 using Xemio.GameLibrary.Entities;
+using Xemio.GameLibrary.Math.Collision.Entities;
 
 namespace Xemio.Adventure.Worlds.Entities
 {
-    public abstract class LinkableEntity : Entity, ILinkable<string>
+    public abstract class LinkableEntity : CollidableEntity, ILinkable<string>
     {
         #region Constructors
         /// <summary>

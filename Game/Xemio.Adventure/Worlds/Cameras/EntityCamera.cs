@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Xemio.Adventure.Worlds.Entities.Components;
 using Xemio.GameLibrary.Entities;
 using Xemio.GameLibrary.Math;
+using Xemio.GameLibrary.Rendering.Sprites;
 
 namespace Xemio.Adventure.Worlds.Cameras
 {
@@ -44,7 +46,22 @@ namespace Xemio.Adventure.Worlds.Cameras
         /// <param name="elapsed">The elapsed.</param>
         public void Tick(float elapsed)
         {
-            this.Position += (this.Entity.Position - this.Position) * this.InterpolationSpeed;
+            Vector2 animationOffset = Vector2.Zero;
+            Vector2 increment = this.Entity.Position - this.Position;
+
+            var animationComponent = this.Entity.GetComponent<AnimationComponent>();
+            if (animationComponent != null)
+            {
+                AnimationInstance current = animationComponent.Current;
+                if (current != null)
+                {
+                    animationOffset = new Vector2(
+                        current.Frame.Width * 0.5f,
+                        current.Frame.Height * 0.5f);
+                }
+            }
+
+            this.Position += (increment + animationOffset) * this.InterpolationSpeed;
         }
         #endregion
     }
