@@ -20,7 +20,7 @@ namespace Xemio.Adventure.Worlds.Cameras
         public EntityCamera(Entity entity)
         {
             this.Entity = entity;
-            this.InterpolationSpeed = 0.05f;
+            this.InterpolationSpeed = 0.08f;
         }
         #endregion
         

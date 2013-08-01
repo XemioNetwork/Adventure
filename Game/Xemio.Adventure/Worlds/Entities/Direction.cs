@@ -51,7 +51,7 @@ namespace Xemio.Adventure.Worlds.Entities
             if (direction.HasFlag(Direction.Down))
                 vector += new Vector2(0, 1);
 
-            return Vector2.Normalize(vector);
+            return vector;
         }
     }
 }

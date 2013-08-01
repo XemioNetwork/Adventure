@@ -82,7 +82,7 @@ namespace Xemio.Adventure.Worlds.Serialization.Maps
                 string imageFile = Path.Combine(directory, relativePath);
                 
                 //TODO: logging
-                if (!this._content.FileSystem.Exists(imageFile))
+                if (!this._content.FileSystem.FileExists(imageFile))
                     continue;
 
                 ITexture texture = this._factory.CreateTexture(imageFile);

@@ -22,7 +22,7 @@ namespace Xemio.Adventure.Worlds.Entities.Characters
         /// </summary>
         public TestEntity()
         {
-            this.Components.Add(new MovementComponent(this) {Speed = 2});
+            this.Components.Add(new MovementComponent(this) {Speed = 10});
         }
         #endregion
 

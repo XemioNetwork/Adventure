@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Xemio.Adventure.Worlds.Entities;
 using Xemio.Adventure.Worlds.Entities.Components;
 using Xemio.GameLibrary.Entities;
 using Xemio.GameLibrary.Math.Collision.Entities;
@@ -34,6 +35,22 @@ namespace Xemio.Adventure.Worlds
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Adds the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        public override void Add(Entity entity)
+        {
+            var component = entity.GetComponent<PropertyComponent>();
+
+            if (component.Properties.Retrieve<bool>("Obsolete"))
+            {
+                this.Factory.CreateId();
+                return;
+            }
+
+            base.Add(entity);
+        }
         /// <summary>
         /// Sorts the entity collection.
         /// </summary>

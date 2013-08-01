@@ -141,6 +141,9 @@ namespace Xemio.Adventure.Worlds
                 return;
             }
 
+            if (tileIndex == 0)
+                return;
+
             TileSet tileSet = this.GetTileSet(tileIndex);
             if (tileSet == null)
             {

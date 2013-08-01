@@ -86,8 +86,8 @@ namespace Xemio.Adventure.Scenes
         private void RenderHearts()
         {
             //TODO: get hero health
-            int maxHealth = 20;
-            int health = 7;
+            int maxHealth = 10;
+            int health = 6;
 
             for (int mh = 0; mh < maxHealth / 2; mh++)
             {
@@ -117,7 +117,7 @@ namespace Xemio.Adventure.Scenes
         {
             //TODO: get hero experience
             float neededExperience = 300;
-            float experience = 1;
+            float experience = 200;
 
             float percentage = experience / neededExperience;
 

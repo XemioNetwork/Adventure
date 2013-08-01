@@ -19,8 +19,7 @@ namespace Xemio.Adventure.Worlds.Serialization.Maps
 
             CollisionMap collisionMap = new CollisionMap(
                 storage.Retrieve<int>("Width"),
-                storage.Retrieve<int>("Height"),
-                storage.Retrieve<int>("CellSize"));
+                storage.Retrieve<int>("Height"));
             
             JArray array = storage.Retrieve<JArray>("CollisionMap");
             for (int x = 0; x < collisionMap.Width; x++)

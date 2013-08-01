@@ -20,7 +20,7 @@ namespace Xemio.Adventure.Worlds.Entities.Components.Movement
             var eventManager = XGL.Components.Get<EventManager>();
             eventManager.Subscribe<IMovementEvent>(this.HandleMovement);
 
-            this.Speed = 2;
+            this.Speed = 1.0f;
         }
         #endregion
         
@@ -28,7 +28,7 @@ namespace Xemio.Adventure.Worlds.Entities.Components.Movement
         /// <summary>
         /// Gets or sets the speed.
         /// </summary>
-        public int Speed { get; set; }
+        public float Speed { get; set; }
         /// <summary>
         /// Gets or sets the direction.
         /// </summary>
