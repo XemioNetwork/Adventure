@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
+using Xemio.Adventure.Game;
+using Xemio.Adventure.Game.States;
 using Xemio.Adventure.Scenes;
 using Xemio.Adventure.Scenes.Debug;
 using Xemio.Adventure.Worlds;
@@ -22,11 +25,21 @@ namespace Xemio.Adventure.App
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            float width = Screen.PrimaryScreen.Bounds.Width;
+            float height = Screen.PrimaryScreen.Bounds.Height;
+
+            float aspectRatio = width / height;
+
             MainForm mainForm = new MainForm();
-            mainForm.Text = TimeSpan.MaxValue.ToString();
+            mainForm.ClientSize = new Size(800, 600);
 
             XGL.Initialize(new GDIGraphicsInitializer());
-            XGL.Run(mainForm.Handle, 400, 300, 60);
+            XGL.Run(mainForm.Handle,
+                mainForm.ClientSize.Width / 2,
+                mainForm.ClientSize.Height / 2,
+                60);
+
+            XGL.Components.Add(new GameStateManager());
             
             var sceneManager = XGL.Components.Get<SceneManager>();
             var startScene = new LoadingScene();

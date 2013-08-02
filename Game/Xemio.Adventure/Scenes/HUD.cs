@@ -78,7 +78,10 @@ namespace Xemio.Adventure.Scenes
         /// </summary>
         private void RenderBar()
         {
-            this.RenderManager.Render(this._bar, Vector2.Zero);
+            DisplayMode displayMode = this.GraphicsDevice.DisplayMode;
+
+            this.RenderManager.Render(this._bar,
+                new Rectangle(0, 0, displayMode.Width, this._bar.Height));
         }
         /// <summary>
         /// Renders the hearts bar.
