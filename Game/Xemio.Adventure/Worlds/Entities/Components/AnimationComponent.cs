@@ -43,7 +43,7 @@ namespace Xemio.Adventure.Worlds.Entities.Components
         /// Changes the animation.
         /// </summary>
         /// <param name="animationName">Name of the animation.</param>
-        public void ChangeAnimation(string animationName)
+        public void PlayAnimation(string animationName)
         {
             var animation = this.Animations.FirstOrDefault(
                 a => a.Animation.Name == animationName);

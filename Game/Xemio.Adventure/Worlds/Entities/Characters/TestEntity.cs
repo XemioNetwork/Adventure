@@ -38,7 +38,7 @@ namespace Xemio.Adventure.Worlds.Entities.Characters
         /// <param name="environment">The environment.</param>
         public override void Initialize(EntityEnvironment environment)
         {
-            this.GetComponent<AnimationComponent>().ChangeAnimation("IdleDown");
+            this.GetComponent<AnimationComponent>().PlayAnimation("IdleDown");
             base.Initialize(environment);
         }
         /// <summary>

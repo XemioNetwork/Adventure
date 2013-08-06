@@ -37,7 +37,7 @@ namespace Xemio.Adventure.Worlds.Entities.Characters
             }
 
             this.GetComponent<AnimationComponent>()
-                .ChangeAnimation("IdleDown");
+                .PlayAnimation("IdleDown");
 
             base.Initialize(environment);
         }

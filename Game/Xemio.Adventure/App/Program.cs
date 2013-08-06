@@ -9,6 +9,7 @@ using Xemio.Adventure.Worlds;
 using Xemio.GameLibrary;
 using Xemio.GameLibrary.Events;
 using Xemio.GameLibrary.Game.Scenes;
+using Xemio.GameLibrary.Math;
 using Xemio.GameLibrary.Rendering.GDIPlus;
 using Xemio.GameLibrary.Rendering.SDL;
 
@@ -29,25 +30,23 @@ namespace Xemio.Adventure.App
             float height = Screen.PrimaryScreen.Bounds.Height;
 
             float aspectRatio = width / height;
-
+            
+            Size size = new Size(800, 600);
             MainForm mainForm = new MainForm();
-            mainForm.ClientSize = new Size(800, 600);
+            mainForm.ClientSize = size;
 
-            XGL.Initialize(new GDIGraphicsInitializer());
-            XGL.Run(mainForm.Handle,
-                mainForm.ClientSize.Width / 2,
-                mainForm.ClientSize.Height / 2,
-                60);
+            var config = XGL.Configure()
+                .FrameRate(60)
+                .BackBuffer(size.Width / 2, size.Height / 2)
+                .WithDefaultComponents()
+                .Components(new GameStateManager())
+                .Graphics<GDIGraphicsInitializer>()
+                .Scenes(new BackgroundScene(),
+                        new SplashScreen(new LoadingScene()),
+                        new DebugOverlay())
+                .BuildConfiguration();
 
-            XGL.Components.Add(new GameStateManager());
-            
-            var sceneManager = XGL.Components.Get<SceneManager>();
-            var startScene = new LoadingScene();
-
-            sceneManager.Add(new BackgroundScene());
-            sceneManager.Add(new SplashScreen(startScene));
-            sceneManager.Add(new DebugOverlay());
-            
+            XGL.Run(mainForm.Handle, config);
             Application.Run(mainForm);
         }
     }
