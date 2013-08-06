@@ -50,7 +50,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="XGL, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\GameLibrary\GameLibrary\Xemio.GameLibrary\bin\Debug\XGL.dll</HintPath>
+      <HintPath>..\..\packages\Xemio-GameLibrary.0.5.0\lib\net40\XGL.dll</HintPath>
     </Reference>
     <Reference Include="XGL.Rendering.GDIPlus, Version=0.1.11.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="XGL.Rendering.SDL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
@@ -150,7 +150,6 @@
     <Folder Include="Worlds\Generation\Dungeons\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Libraries\XGL.dll" />
     <Content Include="Libraries\XGL.Rendering.GDIPlus.dll" />
     <Content Include="Libraries\XGL.Rendering.SDL.dll" />
     <Content Include="Maps\Tilesets\characters.png">
