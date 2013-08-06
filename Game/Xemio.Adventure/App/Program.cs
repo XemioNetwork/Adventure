@@ -11,7 +11,6 @@ using Xemio.GameLibrary.Events;
 using Xemio.GameLibrary.Game.Scenes;
 using Xemio.GameLibrary.Math;
 using Xemio.GameLibrary.Rendering.GDIPlus;
-using Xemio.GameLibrary.Rendering.SDL;
 
 namespace Xemio.Adventure.App
 {

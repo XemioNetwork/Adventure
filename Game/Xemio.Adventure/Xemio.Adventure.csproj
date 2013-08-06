@@ -50,10 +50,12 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="XGL, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xemio-GameLibrary.0.5.0\lib\net40\XGL.dll</HintPath>
+      <HintPath>..\..\packages\Xemio-GameLibrary.0.5.1\lib\net40\XGL.dll</HintPath>
     </Reference>
-    <Reference Include="XGL.Rendering.GDIPlus, Version=0.1.11.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="XGL.Rendering.SDL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="XGL.Rendering.GDIPlus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Xemio-GameLibrary-GDI-Renderer.1.0.0\lib\net40\XGL.Rendering.GDIPlus.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\MainForm.cs">
