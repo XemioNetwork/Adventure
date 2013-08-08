@@ -18,7 +18,7 @@ namespace Xemio.Adventure.Worlds.Entities.Characters
         /// </summary>
         public HeroEntity()
         {
-            this.Components.Add(new InputComponent(this));
+            this.Components.Add(new InputComponent(this, 0));
             this.Components.Add(new MovementComponent(this) {Speed = 3});
         }
         #endregion
